@@ -1,14 +1,9 @@
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 
-interface Params {
-  params: {
-    slug: string;
-  };
-}
-
-export default async function BlogPostPage({ params }: Params) {
-  const post = await prisma.post.findUnique({ where: { slug: params.slug } });
+export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const post = await prisma.post.findUnique({ where: { slug } });
   if (!post) return notFound();
   return (
     <div className="container mx-auto px-4 py-10 space-y-4">
