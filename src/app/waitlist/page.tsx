@@ -1,12 +1,12 @@
 "use client";
-import { useEffect, useMemo, useState } from "react";
+import { Suspense, useMemo, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 
-export default function WaitlistPage() {
+function Content() {
   const search = useSearchParams();
   const referredBy = search.get("ref");
   const [email, setEmail] = useState("");
@@ -77,6 +77,14 @@ export default function WaitlistPage() {
         </ul>
       </div>
     </div>
+  );
+}
+
+export default function WaitlistPage() {
+  return (
+    <Suspense fallback={<div className="container mx-auto px-4 py-10">Loading…</div>}>
+      <Content />
+    </Suspense>
   );
 }
 
